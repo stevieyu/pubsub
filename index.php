@@ -11,10 +11,12 @@ if($eventName) {
 }
 
 
-if($_SERVER['REQUEST_METHOD'] == 'GET' && $defaultHandler->isSseRequest() && $defaultHandler->eventName){
-	$sse = new \Sse\SSE();
-	$sse->addEventListener($defaultHandler->eventName, $defaultHandler);
-	$sse->start();
+if($_SERVER['REQUEST_METHOD'] == 'GET'){
+	if($defaultHandler->isSseRequest() && $defaultHandler->eventName){
+		$sse = new \Sse\SSE();
+		$sse->addEventListener($defaultHandler->eventName, $defaultHandler);
+		$sse->start();
+	}
 }
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
