@@ -1,0 +1,16 @@
+{
+    "html.autoClosingTags": true,
+    "javascript.autoClosingTags": true,
+    "typescript.autoClosingTags": true,
+    "editor.bracketPairColorization.enabled": true,
+    "editor.codeActionsOnSave": {
+        "source.organizeImports":"always"
+    },
+    "javascript.suggest.autoImports": true,
+    "javascript.updateImportsOnFileMove.enabled": "prompt",
+    "typescript.suggest.autoImports": true,
+    "typescript.updateImportsOnFileMove.enabled": "prompt",
+    "editor.linkedEditing": true,
+    "files.trimTrailingWhitespace": true,
+    "editor.guides.bracketPairs": "active"
+}

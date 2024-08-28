@@ -2,7 +2,6 @@
 
 require 'vendor/autoload.php';
 
-use Sse\SSE;
 
 $defaultHandler = new \App\DefaultHandler();
 
@@ -12,8 +11,8 @@ if($eventName) {
 }
 
 
-if($_SERVER['REQUEST_METHOD'] == 'GET'){
-	$sse = new SSE();
+if($_SERVER['REQUEST_METHOD'] == 'GET' && $defaultHandler->isSseRequest() && $defaultHandler->eventName){
+	$sse = new \Sse\SSE();
 	$sse->addEventListener($defaultHandler->eventName, $defaultHandler);
 	$sse->start();
 }
@@ -21,7 +20,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 	$data = $_POST;
 	if(!array_count($data)){
-		$data = json_decode(file_get_contents('php://input'),TRUE);	
+		$data = json_decode(file_get_contents('php://input'),TRUE);
 	}
 	if($data){
 		$defaultHandler->setOrGet($data);

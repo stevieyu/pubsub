@@ -13,5 +13,6 @@ chmod +x "$binpath"/php && \
 curl -L https://mirrors.aliyun.com/composer/composer.phar -o "$binpath"/composer && \
 chmod +x "$binpath"/composer && \
 composer config -g repos.packagist composer https://mirrors.tencent.com/composer/ && \
+composer install && \
 frankenphp php-server
 ```
