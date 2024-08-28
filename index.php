@@ -3,28 +3,30 @@
 require 'vendor/autoload.php';
 
 
+
 $defaultHandler = new \App\DefaultHandler();
-
-$eventName = $_SERVER['PATH_INFO'] ?? '';
-if($eventName) {
-	$defaultHandler->eventName = $eventName;
-}
+$defaultHandler->eventName = $_GET['event'] ?? '';
 
 
-if($_SERVER['REQUEST_METHOD'] == 'GET'){
-	if($defaultHandler->isSseRequest() && $defaultHandler->eventName){
-		$sse = new \Sse\SSE();
-		$sse->addEventListener($defaultHandler->eventName, $defaultHandler);
-		$sse->start();
+if($defaultHandler->eventName){
+	if($_SERVER['REQUEST_METHOD'] == 'GET'){
+		if($defaultHandler->isSseRequest()){
+			$sse = new \Sse\SSE();
+			$sse->addEventListener($defaultHandler->eventName, $defaultHandler);
+			$sse->start();
+		}
+	}
+
+	if($_SERVER['REQUEST_METHOD'] == 'POST'){
+		$data = $_POST;
+		if(!array_count($data)){
+			$data = json_decode(file_get_contents('php://input'),TRUE);
+		}
+		if($data){
+			$defaultHandler->setOrGet($data);
+		}
 	}
 }
 
-if($_SERVER['REQUEST_METHOD'] == 'POST'){
-	$data = $_POST;
-	if(!array_count($data)){
-		$data = json_decode(file_get_contents('php://input'),TRUE);
-	}
-	if($data){
-		$defaultHandler->setOrGet($data);
-	}
-}
+
+

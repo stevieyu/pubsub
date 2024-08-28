@@ -7,7 +7,6 @@ url="https://www.ghproxy.cn/https://github.com/dunglas/frankenphp/releases/lates
 binpath="/root/.local/bin" && \
 curl -L "$url" -o "$binpath"/frankenphp && \
 chmod +x "$binpath"/frankenphp && \
-alias php-cli='frankenphp php-cli' && \
 echo '#!/usr/bin/env bash\nfrankenphp php-cli "$@"' >> "$binpath"/php && \
 chmod +x "$binpath"/php && \
 curl -L https://mirrors.aliyun.com/composer/composer.phar -o "$binpath"/composer && \
