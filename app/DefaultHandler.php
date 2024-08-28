@@ -9,12 +9,11 @@ class DefaultHandler implements Event {
 	public $eventName = 'default';
 
 	private $storage;
-	private $cache = 0;
     private $data;
 
 
 	public function __construct() {
-        $this->storage = new Data('file', ['path' => '/tmp/pubsub']);
+        $this->storage = new Data('file', ['path' => 'tmp']);
     }
 
 	public function update(){
@@ -22,21 +21,12 @@ class DefaultHandler implements Event {
 	}
 
 	public function check(){
-        // Fetch data from the data instance
         $this->data = $this->setOrGet();
      	if(!$this->data) return false;
 
-        // Check if this connection is a reconnect. If it is, just
-        // record last message's time to prevent repeatly sending messages
-        if(!$this->cache){
-            $this->cache = $this->data->time;
-            return false;
-        }
-
-        if($this->data->time !== $this->cache){
-            $this->cache = $this->data->time;
-            return true;
-        }
+    	if($this->data->time > time() - 2) {
+			return true;
+		}
 
         return false;
 	}
@@ -44,7 +34,7 @@ class DefaultHandler implements Event {
 	public function setOrGet($data = null){
 		if($data) {
 			$this->storage->set($this->eventName, json_encode([
-				'body' => htmlentities($data),
+				'body' => is_string($data) ? htmlentities($data) : $data,
 	            'time' => time(),
 			]));
 		}
@@ -53,11 +43,6 @@ class DefaultHandler implements Event {
 	}
 
 	function isSseRequest() {
-		if (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'text/event-stream') !== false) {
-			if (isset($_SERVER['HTTP_X_EVENT_SOURCE']) && $_SERVER['HTTP_X_EVENT_SOURCE'] !== '') {
-				return true;
-			}
-		}
-		return false;
+		return strpos($_SERVER['HTTP_ACCEPT'] ?? '', 'text/event-stream') !== false;
 	}
 }
