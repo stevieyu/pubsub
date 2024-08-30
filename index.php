@@ -36,7 +36,7 @@ if($defaultHandler->eventName){
 	}
 }else{
 	echo <<<EOF
-	<script src="https://unpkg.com/alpinejs@3" defer></script>
+	<!--<script src="https://unpkg.com/alpinejs@3" defer></script>-->
 	<script src="https://unpkg.com/htmx.org@2" defer></script>
 	<script src="https://unpkg.com/htmx-ext-sse@2/sse.js" defer></script>
 EOF;
@@ -46,7 +46,7 @@ EOF;
 	function updateEventName(event){
 		const {target} = event;
 		const form = htmx.find("form")
-		
+
 		if (target.value) {
 			form.setAttribute('hx-post', '?event=' + target.value);
 			htmx.process(form)
