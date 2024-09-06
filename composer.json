@@ -1,16 +1,11 @@
 {
-    "name": "stevie/php-sse-im",
+    "name": "php/pubsub",
     "autoload": {
         "psr-4": {
             "App\\": "app/"
         }
     },
-    "authors": [
-        {
-            "name": "Stevie",
-            "email": "yzm629@sina.cn"
-        }
-    ],
+    "authors": [],
     "require": {
         "tonyhhyip/sse": "^2.2"
     }
